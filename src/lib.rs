@@ -28,6 +28,8 @@
 //! ```
 //! Calling this function is somewhat cumbersome, and can be made cleaner with:
 //! ```
+//! # extern crate tuple_conv;
+//! # use tuple_conv::RepeatedTuple; 
 //! fn do_something_2d<T, S>(a: T) where
 //!     T: RepeatedTuple<S>,
 //!     S: RepeatedTuple<i32>,
@@ -53,7 +55,7 @@
 //! Here's how we'd go about doing that, given a function `foo` that takes some
 //! `Vec`:
 //! ```
-//! fn foo(v: Vec<String>) {
+//! fn foo(v: Vec<&str>) {
 //!     /* do stuff */
 //! }
 //!
@@ -67,19 +69,24 @@
 //!
 //! // ...
 //!
-//! fn foo<V: TupleOrVec<String>>(v: V) {
+//! fn foo<V: TupleOrVec<&'static str>>(v: V) {
 //!     /* do stuff */
 //! }
 //! ```
 //! Then, convert the argument
 //! ```
-//! fn foo<V: TupleOrVec<String>>(v: V) {
-//!     let v = v.inner();
+//! # extern crate tuple_conv;
+//! # use tuple_conv::TupleOrVec;
+//! fn foo<V: TupleOrVec<&'static str>>(v: V) {
+//!     let v = v.as_vec();
 //!     /* do stuff */
 //! }
 //! ```
 //! And now we can call `foo` like this:
 //! ```
+//! # extern crate tuple_conv;
+//! # use tuple_conv::TupleOrVec;
+//! # fn foo<V: TupleOrVec<&'static str>>(v: V) {}
 //! foo(("bar", "baz"));
 //! foo(vec!["baz", "bar"]);
 //! ```
@@ -300,17 +307,27 @@ mod tests {
     macro_rules! long {
         (tuple) => {
             (
-                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-                24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44,
-                45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64,
+                1, 2, 3, 4, 5, 6, 7, 8,
+                9, 10, 11, 12, 13, 14, 15, 16,
+                17, 18, 19, 20, 21, 22, 23, 24,
+                25, 26, 27, 28, 29, 30, 31, 32,
+                33, 34, 35, 36, 37, 38, 39, 40,
+                41, 42, 43, 44, 45, 46, 47, 48,
+                49, 50, 51, 52, 53, 54, 55, 56,
+                57, 58, 59, 60, 61, 62, 63, 64,
             )
         };
 
         (slice-reversed) => {
             [
-                64, 64, 62, 61, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44,
-                43, 42, 41, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15,
-                14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,
+                64, 63, 62, 61, 60, 59, 58, 57,
+                56, 55, 54, 53, 52, 51, 50, 49,
+                48, 47, 46, 45, 44, 43, 42, 41,
+                40, 39, 38, 37, 36, 35, 34, 33,
+                32, 31, 30, 29, 28, 27, 26, 25,
+                24, 23, 22, 21, 20, 19, 18, 17,
+                16, 15, 14, 13, 12, 11, 10, 9,
+                8, 7, 6, 5, 4, 3, 2, 1,
             ]
         };
     }
@@ -334,7 +351,9 @@ mod tests {
         assert!(boxed_equal(b, Box::new([3, 2, 1])));
 
         let t = long!(tuple);
+        println!("{:?} {:?}", t.0, t.31);
         let b = t.to_boxed_slice_reversed();
+        println!("{:?} {:?}", b[0], b[31]);
         assert!(boxed_equal(b, Box::new(long!(slice - reversed))));
     }
 
