@@ -1,0 +1,19 @@
+[package]
+name = "tuple-conv"
+version = "1.0.0"
+authors = ["Max Sharnoff"]
+description = "Allows converting tuples of one element to vectors"
+license = "MIT"
+repository = "https://github.com/sharnoff/tuple-conv"
+readme = "README.md"
+documentation = "https://docs.rs/tuple-conv"
+keywords = ["tuple", "convert", "vec", "syntax"]
+categories = ["rust-patterns"]
+edition = "2018"
+
+[dev-dependencies]
+criterion = "0.3"
+
+[[bench]]
+name = "all-benches"
+harness = false
