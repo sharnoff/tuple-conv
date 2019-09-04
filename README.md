@@ -2,6 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docs Version](https://docs.rs/tuple-conv/badge.svg)](https://docs.rs/tuple-conv/)
+[![Build Status](https://travis-ci.com/sharnoff/tuple-conv.svg?branch=master)](https://travis-ci.com/sharnoff/tuple-conv)
 
 `tuple-conv` provides simple tools for converting tuples with repeated elements
 into vectors of that type. Repeated tuples are of the form: `(T, T, ... T)` -
