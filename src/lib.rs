@@ -29,7 +29,7 @@
 //! Calling this function is somewhat cumbersome, and can be made cleaner with:
 //! ```
 //! # extern crate tuple_conv;
-//! # use tuple_conv::RepeatedTuple; 
+//! # use tuple_conv::RepeatedTuple;
 //! fn do_something_2d<T, S>(a: T) where
 //!     T: RepeatedTuple<S>,
 //!     S: RepeatedTuple<i32>,
@@ -300,10 +300,9 @@ impl_tuple! {
 
 #[cfg(test)]
 mod tests {
-    #![feature(test)]
-
     use crate::RepeatedTuple;
 
+    #[rustfmt::skip]
     macro_rules! long {
         (tuple) => {
             (
@@ -318,7 +317,7 @@ mod tests {
             )
         };
 
-        (slice-reversed) => {
+        (slice_reversed) => {
             [
                 64, 63, 62, 61, 60, 59, 58, 57,
                 56, 55, 54, 53, 52, 51, 50, 49,
@@ -332,36 +331,26 @@ mod tests {
         };
     }
 
-    fn boxed_equal<T: PartialEq>(a: Box<[T]>, b: Box<[T]>) -> bool {
-        if a.len() != b.len() {
-            return false;
-        }
-
-        !a.iter().zip(b.iter()).any(|(a, b)| a != b)
-    }
-
     #[test]
     fn to_boxed_slice_reversed() {
         let t = (1,);
         let b = t.to_boxed_slice_reversed();
-        assert!(boxed_equal(b, Box::new([1])));
+        assert!(b == Box::new([1]));
 
         let t = (1, 2, 3);
         let b = t.to_boxed_slice_reversed();
-        assert!(boxed_equal(b, Box::new([3, 2, 1])));
+        assert!(b == Box::new([3, 2, 1]));
 
         let t = long!(tuple);
-        println!("{:?} {:?}", t.0, t.31);
         let b = t.to_boxed_slice_reversed();
-        println!("{:?} {:?}", b[0], b[31]);
-        assert!(boxed_equal(b, Box::new(long!(slice - reversed))));
+        assert!(b == Box::new(long!(slice_reversed)));
     }
 
     #[test]
     fn to_boxed_slice() {
         let t = (1, 2, 3);
         let b = t.to_boxed_slice();
-        assert!(boxed_equal(b, Box::new([1, 2, 3])));
+        assert!(b == Box::new([1, 2, 3]));
     }
 
     #[test]
