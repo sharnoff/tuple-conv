@@ -1,6 +1,6 @@
 [package]
 name = "tuple-conv"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Max Sharnoff"]
 description = "Allows converting tuples of one element to vectors"
 license = "MIT"
